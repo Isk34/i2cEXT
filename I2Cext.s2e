@@ -1,0 +1,66 @@
+/*
+		// content of i2cEXT.s2e 
+*/
+{	"extensionName": "I2C Manage",
+	"description": "Extension for manage i2c bus devices (Arduino only)",
+	"version": "0.5",
+	"author": "Isaac Sanchez(saki@asako.org)",
+	"homepage": "http://electron.asako.org/doku.php/exti2c",
+	"sort":0,
+	"javascriptURL":"js/I2Cext.js",
+  "firmware":"1.0",
+  "extensionPort":0,
+	"blockSpecs": 
+	[
+		[
+			"w","Write-I2C(BaseAddr:  %n, RegAddr:  %n, Data:  %n  )","WriteI2C","0","0","0",
+			{
+				"setup":"Wire.begin();\n
+\n",
+				"inc":" ",
+				"def":" ",
+				"work":" Wire.beginTransmission({0}); //start talking\
+		Wire.write({1}); // Set the Register\
+		Wire.write({2}); // Set the data\
+		Wire.endTransmission();\ 
+\n",				
+				"loop":""
+			}
+		],	
+		[
+			"r","Read-I2C(BaseAddr:  %n, RegAddr:  %n )", "ReadI2C","0","0",
+			{
+				"setup":"Wire.begin();\n
+\n",
+				"inc":" ",
+				"def":"int datorec(int addr, int nbyte) {\
+		int dtr;\
+		Wire.beginTransmission(addr); //start talking\
+		Wire.write(nbyte); // Set the Register\
+		Wire.endTransmission();\
+		Wire.requestFrom(addr, 1);\
+		dtr = Wire.read(); //LSB\
+		return dtr;\
+		} \n",
+				"work":"datorec({0},{1}) \n",
+		 				
+				"loop":""
+			}
+		],
+	],
+	"menus": {
+		"digital":["HIGH","LOW"]
+	},
+	"values":{
+		"HIGH":1,
+		"LOW":0
+	},
+	"translators":{
+		"es_ES":{
+		    "Extension for manage i2c bus devices": "Extensión para manejar dispositivos i2c",
+			"Write-I2C(BaseAddr:  %n, RegAddr:  %n, Data:  %n  )": "Escribir-I2C(BaseDir:  %n, RegDir:  %n, Dato:  %n  )",
+			"Read-I2C(BaseAddr:  %n, RegAddr:  %n )": "Leer-I2C(BaseDir:  %n, RegDir:  %n)"
+		}
+		
+	}
+}
